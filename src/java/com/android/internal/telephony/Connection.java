@@ -104,6 +104,7 @@ public abstract class Connection {
     private boolean mRemoteVideoCapable;
     private int mAudioQuality;
     private android.telecom.Connection.VideoProvider mVideoProvider;
+    public Call.State mPreHandoverState = Call.State.IDLE;
 
     /* Instance Methods */
 
@@ -250,6 +251,31 @@ public abstract class Connection {
             return Call.State.IDLE;
         } else {
             return c.getState();
+        }
+    }
+
+    /**
+     * If this connection went through handover return the state of the
+     * call that contained this connection before handover.
+     */
+    public Call.State getStateBeforeHandover() {
+        return mPreHandoverState;
+    }
+
+    /**
+     * Get the extras for the connection's call.
+     *
+     * Returns getCall().getExtras()
+     */
+    public Bundle getExtras() {
+        Call c;
+
+        c = getCall();
+
+        if (c == null) {
+            return null;
+        } else {
+            return c.getExtras();
         }
     }
 
